@@ -126,7 +126,8 @@ class Event(models.Model):
     email = models.EmailField(
         "event email", max_length=75, null=True, blank=True)
     main_organizer = models.ForeignKey(
-        User, null=True, blank=True, related_name="main_organizer")
+        User, null=True, blank=True, related_name="main_organizer",
+        on_delete=models.deletion.SET_NULL)
     team = models.ManyToManyField(User, blank=True)
     is_on_homepage = models.BooleanField("visible on homepage?", default=True)
     is_deleted = models.BooleanField("deleted?", default=False)
@@ -279,8 +280,9 @@ class Event(models.Model):
 
 
 class EventPageContent(models.Model):
-    event = models.ForeignKey(Event, null=False,
-                              blank=False, related_name="content")
+    event = models.ForeignKey(
+        Event, null=False, blank=False, related_name="content",
+        on_delete=models.deletion.CASCADE)
     name = models.CharField(null=False, blank=False, max_length=100)
     content = models.TextField(
         null=False, blank=False, help_text="HTML allowed")
@@ -303,8 +305,9 @@ class EventPageContent(models.Model):
 
 
 class EventPageMenu(models.Model):
-    event = models.ForeignKey(Event, null=False,
-                              blank=False, related_name="menu")
+    event = models.ForeignKey(
+        Event, null=False, blank=False, related_name="menu",
+        on_delete=models.deletion.CASCADE)
     title = models.CharField(max_length=255, null=False, blank=False)
     url = models.CharField(
         max_length=255, null=False, blank=False,

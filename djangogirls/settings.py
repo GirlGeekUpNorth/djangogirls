@@ -31,6 +31,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
 
     'django_date_extensions',
+    'django_extensions',
     'storages',
     'markdown_deux',
     'djrill',

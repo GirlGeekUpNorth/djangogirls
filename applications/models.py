@@ -14,7 +14,8 @@ RSVP_LINKS = ['[rsvp-url-yes]', '[rsvp-url-no]']
 
 
 class Form(models.Model):
-    event = models.OneToOneField(Event, null=False)
+    event = models.OneToOneField(Event, null=False,
+                                 on_delete=models.deletion.CASCADE)
     text_header = models.CharField(
         max_length=255, default="Apply for a spot at Django Girls [City]!")
     text_description = models.TextField(
@@ -81,7 +82,8 @@ class Question(models.Model):
         ('email', 'Email')
     )
 
-    form = models.ForeignKey(Form, null=False, blank=False)
+
+    form = models.ForeignKey(Form, null=False, blank=False, on_delete=models.deletion.CASCADE)
     title = models.TextField(verbose_name="Question")
     help_text = models.TextField(
         blank=True, default='', verbose_name="Additional help text to the question?")
@@ -133,7 +135,8 @@ class Application(models.Model):
         (RSVP_NO, 'RSVP: Rejected invitation')
     )
 
-    form = models.ForeignKey(Form, null=False, blank=False)
+    form = models.ForeignKey(Form, null=False, blank=False,
+                             on_delete=models.deletion.CASCADE)
     number = models.PositiveIntegerField(default=1, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     state = models.CharField(
@@ -234,8 +237,10 @@ class Application(models.Model):
 
 
 class Answer(models.Model):
-    application = models.ForeignKey(Application, null=False, blank=False)
-    question = models.ForeignKey(Question, null=False, blank=False)
+    application = models.ForeignKey(
+        Application, null=False, blank=False, on_delete=models.deletion.PROTECT)
+    question = models.ForeignKey(Question, null=False, blank=False,
+                                 on_delete=models.deletion.PROTECT)
     answer = models.TextField()
 
     class Meta:
@@ -247,8 +252,10 @@ class Score(models.Model):
     A score represents the score given by a coach for an application.
     """
 
-    user = models.ForeignKey(User, related_name='scores')
-    application = models.ForeignKey(Application, related_name='scores')
+    user = models.ForeignKey(User, related_name='scores',
+                             on_delete=models.deletion.PROTECT)
+    application = models.ForeignKey(Application, related_name='scores',
+                                    on_delete=models.deletion.PROTECT)
     score = models.FloatField(
         help_text='5 being the most positive, 1 being the most negative.',
         validators=[MaxValueValidator(5), MinValueValidator(0)],
@@ -262,8 +269,9 @@ class Score(models.Model):
 
 
 class Email(models.Model):
-    form = models.ForeignKey(Form)
-    author = models.ForeignKey(User, related_name="author")
+    form = models.ForeignKey(Form, on_delete=models.deletion.PROTECT)
+    author = models.ForeignKey(User, related_name="author",
+                               on_delete=models.deletion.PROTECT)
     subject = models.CharField(max_length=255)
     text = models.TextField(
         verbose_name="Content of the email",

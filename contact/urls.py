@@ -4,5 +4,5 @@ from contact.views import ContactView
 
 
 urlpatterns = [
-    url(r'^$', ContactView.as_view(), name='contact'),
+    url(r'', ContactView.as_view(), name='contact'),
 ]

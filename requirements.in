@@ -1,11 +1,11 @@
 boto3
 click
-django-autoslug
 django-click
 dj-database-url
 django-codemirror-widget
 django-countries
 django-date-extensions
+django-extensions
 django-formtools
 django-gulp-rev
 django-leaflet
