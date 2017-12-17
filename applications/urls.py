@@ -2,6 +2,8 @@ from django.urls import path
 
 from applications import views
 
+app_name = 'applications'
+
 urlpatterns = [
     path('<slug:city>/apply/', views.apply, name='apply'),
     path('<slug:city>/applications/',
